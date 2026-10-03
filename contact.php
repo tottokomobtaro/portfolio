@@ -17,7 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (mail($to, $subject, $body, $headers)) {
         // thanks.html にリダイレクト
-        header("Location: /thanks");
+        header("Location: thanks.html");
         exit;
     } else {
         echo "送信に失敗しました。";
