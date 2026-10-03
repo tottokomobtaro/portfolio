@@ -1,0 +1,63 @@
+/* --- ページ読み込み中はスクロール固定（任意） --- */
+body:not(.loaded) {
+  overflow: hidden;
+}
+
+/* --- プリローダー全体 --- */
+#preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: #fff;                  /* 必要なら薄いグラに変更可 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity .5s ease, visibility .5s ease;
+}
+body.loaded #preloader {
+  opacity: 0;
+  visibility: hidden;
+}
+
+/* --- 足跡5つを横並び --- */
+.paw-loader {
+  display: flex;
+  gap: 14px;                         /* 足跡間の距離 */
+}
+
+/* --- 足跡アイコン --- */
+.paww {
+  width: 28px;
+  height: 28px;
+  background: url('../images/inunoashiato.png') no-repeat center / contain;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: pawShowHide 4s ease-in-out infinite; /* 1サイクル：4秒 */
+}
+
+/* 出現のディレイ（1→5で順に出て、あとで順に消える） */
+.paww:nth-child(1) { animation-delay: 0s;   }
+.paww:nth-child(2) { animation-delay: 0.4s; }
+.paww:nth-child(3) { animation-delay: 0.8s; }
+.paww:nth-child(4) { animation-delay: 1.2s; }
+.paww:nth-child(5) { animation-delay: 1.6s; }
+
+/* 出る→少し残る→軽快に消える（要望反映） */
+@keyframes pawShowHide {
+  /* 出現フェーズ（順に出て5つそろう） */
+  0%   { opacity: 0; transform: translateY(10px); }
+  10%  { opacity: 1; transform: translateY(0); }
+  40%  { opacity: 1; transform: translateY(0); }
+
+  /* 消えるフェーズ（軽快にサッと） */
+  55%  { opacity: 0; transform: translateY(-6px); }
+
+  /* リセット待機 */
+  100% { opacity: 0; transform: translateY(-6px); }
+}
+
+/* 動きが苦手な人への配慮 */
+@media (prefers-reduced-motion: reduce) {
+  .paww { animation: none; opacity: 1; transform: none; }
+  body:not(.loaded) { overflow: auto; }
+}
